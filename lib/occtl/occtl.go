@@ -79,10 +79,13 @@ func NewClient(cmd Commander, socketPath *string) (*Client, error) {
 // ShowStatus decodes output from "occtl --json show status command"
 func (c *Client) ShowStatus() (*StatusMessage, error) {
 	status := &StatusMessage{}
-	args := []string{"--json", "-n", "show", "status"}
+	var args []string
 	if c.socketPath != nil {
-		args = append(args, *c.socketPath)
+		args = []string{"-s", *c.socketPath, "--json", "-n", "show", "status"}
+	} else {
+		args = []string{"--json", "-n", "show", "status"}
 	}
+
 	out, err := c.cmd.RunCommand(args...)
 	if err != nil {
 		return nil, fmt.Errorf("error while running command %v", err)
@@ -96,9 +99,11 @@ func (c *Client) ShowStatus() (*StatusMessage, error) {
 // ShowUsers decodes output from "occtl --json show users command"
 func (c *Client) ShowUsers() ([]UsersMessage, error) {
 	users := []UsersMessage{}
-	args := []string{"--json", "-n", "show", "users"}
+	var args []string
 	if c.socketPath != nil {
-		args = append(args, "-s", *c.socketPath)
+		args = []string{"-s", *c.socketPath, "--json", "-n", "show", "users"}
+	} else {
+		args = []string{"--json", "-n", "show", "users"}
 	}
 	out, err := c.cmd.RunCommand(args...)
 	if err != nil {
