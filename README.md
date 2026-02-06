@@ -54,6 +54,7 @@ vpn_user_tx_bytes{device="vpns1",mtu="1434",remote_ip="203.0.113.1",username="a.
 |----------|---------------------------------------------------------------|
 | interval | Delay between occtl scrape (default 30s)                      |
 | listen   | Prometheus HTTP listen IP and port (default "127.0.01:8000")  |
+| socket   | Provide socket path to occtl (default /var/run/occtl.socket)  |
 
 ## Prometheus Configuration
 
@@ -67,3 +68,11 @@ scrape_configs:
         - 127.0.0.1:8000  # The ocserv exporter's real ip:port
     metrics_path: /metrics
 ```
+
+# Contributing
+
+Contributions are welcome! Before starting work on significant changes, please create an issue first.
+## Commit message
+
+Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary).
+Conventional commit messages is enforced by the CI.

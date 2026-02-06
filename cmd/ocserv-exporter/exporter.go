@@ -65,6 +65,7 @@ func (e *Exporter) updateStatus() {
 		vpnIPsBanned.Reset()
 		return
 	}
+	vpnStartTime.WithLabelValues().Set(float64(status.RawUpSince))
 	vpnActiveSessions.WithLabelValues().Set(float64(status.ActiveSessions))
 	vpnHandledSessions.WithLabelValues().Set(float64(status.HandledSessions))
 	vpnIPsBanned.WithLabelValues().Set(float64(status.IPsBanned))
@@ -87,6 +88,7 @@ func (e *Exporter) updateUsers() {
 
 	vpnUserTX.Reset()
 	vpnUserRX.Reset()
+	vpnUserStartTime.Reset()
 	users, err := e.occtlCli.ShowUsers()
 	if err != nil {
 		log.Errorf("Failed to get users details: %v", err)
@@ -97,6 +99,7 @@ func (e *Exporter) updateUsers() {
 	for _, user := range users {
 		vpnUserTX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device).Set(float64(user.RawTX))
 		vpnUserRX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device).Set(float64(user.RawRX))
+		vpnUserStartTime.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device).Set(float64(user.RawConnectedAt))
 	}
 }
 

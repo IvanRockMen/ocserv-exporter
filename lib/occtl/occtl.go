@@ -38,18 +38,19 @@ type StatusMessage struct {
 
 // UsersMessage is a structure to decode JSON returned by "occtl --json show users"
 type UsersMessage struct {
-	ID        int64  `json:"ID"`
-	Username  string `json:"Username"`
-	Vhost     string `json:"vhost"`
-	Device    string `json:"Device"`
-	MTU       string `json:"MTU"`
-	RemoteIP  string `json:"Remote IP"`
-	VPNIPv4   string `json:"IPv4"`
-	VPNIPv6   string `json:"IPv6"`
-	RawRX     int64  `json:"RX,string"`
-	RawTX     int64  `json:"TX,string"`
-	AverageRX string `json:"Average RX"`
-	AverageTX string `json:"Average TX"`
+	ID             int64  `json:"ID"`
+	Username       string `json:"Username"`
+	Vhost          string `json:"vhost"`
+	Device         string `json:"Device"`
+	MTU            string `json:"MTU"`
+	RemoteIP       string `json:"Remote IP"`
+	VPNIPv4        string `json:"IPv4"`
+	VPNIPv6        string `json:"IPv6"`
+	RawRX          int64  `json:"RX,string"`
+	RawTX          int64  `json:"TX,string"`
+	AverageRX      string `json:"Average RX"`
+	AverageTX      string `json:"Average TX"`
+	RawConnectedAt int64  `json:"raw_connected_at"`
 }
 
 // Commander is an interface implementing exec commands
@@ -60,24 +61,29 @@ type Commander interface {
 
 // Client is an helper client to work with occtl.
 type Client struct {
-	cmd Commander
+	cmd        Commander
+	socketPath *string
 }
 
 // NewClient creates a Client checking availability of occtl tool.
-func NewClient(cmd Commander) (*Client, error) {
+func NewClient(cmd Commander, socketPath *string) (*Client, error) {
 	ok, err := cmd.Exists()
 	if !ok {
 		return nil, errors.New("occtl tool not available on this server")
 	} else if err != nil {
 		return nil, fmt.Errorf("failed to lookup for occtl tool: %v", err)
 	}
-	return &Client{cmd: cmd}, nil
+	return &Client{cmd: cmd, socketPath: socketPath}, nil
 }
 
 // ShowStatus decodes output from "occtl --json show status command"
 func (c *Client) ShowStatus() (*StatusMessage, error) {
 	status := &StatusMessage{}
-	out, err := c.cmd.RunCommand("--json", "-n", "show", "status")
+	args := []string{"--json", "-n", "show", "status"}
+	if c.socketPath != nil {
+		args = append(args, *c.socketPath)
+	}
+	out, err := c.cmd.RunCommand(args...)
 	if err != nil {
 		return nil, fmt.Errorf("error while running command %v", err)
 	}
@@ -90,7 +96,11 @@ func (c *Client) ShowStatus() (*StatusMessage, error) {
 // ShowUsers decodes output from "occtl --json show users command"
 func (c *Client) ShowUsers() ([]UsersMessage, error) {
 	users := []UsersMessage{}
-	out, err := c.cmd.RunCommand("--json", "-n", "show", "users")
+	args := []string{"--json", "-n", "show", "users"}
+	if c.socketPath != nil {
+		args = append(args, "-s", *c.socketPath)
+	}
+	out, err := c.cmd.RunCommand(args...)
 	if err != nil {
 		return nil, fmt.Errorf("error while running command %v", err)
 	}

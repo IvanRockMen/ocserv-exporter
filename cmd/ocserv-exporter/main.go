@@ -12,11 +12,15 @@ import (
 var (
 	occtlStatusScrapeError = prometheus.NewCounterVec(prometheus.CounterOpts{
 		Name: "occtl_status_scrape_error_total",
-		Help: "Total number of errors that occured when calling occtl show status.",
+		Help: "Total number of errors that occurred when calling occtl show status.",
 	}, []string{})
 	occtlUsersScrapeError = prometheus.NewCounterVec(prometheus.CounterOpts{
 		Name: "occtl_users_scrape_error_total",
-		Help: "Total number of errors that occured when calling occtl show users.",
+		Help: "Total number of errors that occurred when calling occtl show users.",
+	}, []string{})
+	vpnStartTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "vpn_start_time_seconds",
+		Help: "Start time of ocserv since unix epoch in seconds.",
 	}, []string{})
 	vpnActiveSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "vpn_active_sessions",
@@ -86,18 +90,24 @@ var (
 		Name: "vpn_user_rx_bytes",
 		Help: "Total RX usage in bytes of a user.",
 	}, []string{"username", "remote_ip", "mtu", "vpn_ipv4", "vpn_ipv6", "device"})
+	vpnUserStartTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "vpn_user_start_time_seconds",
+		Help: "Start time of user session since unix epoch in seconds.",
+	}, []string{"username", "remote_ip", "mtu", "vpn_ipv4", "vpn_ipv6", "device"})
 )
 
 func main() {
 	var (
-		interval = flag.Duration("interval", 30*time.Second, "Delay between occtl scrape.")
-		listen   = flag.String("listen", "127.0.0.1:8000", "Prometheus HTTP listen IP and port.")
+		interval   = flag.Duration("interval", 30*time.Second, "Delay between occtl scrape.")
+		listen     = flag.String("listen", "127.0.0.1:8000", "Prometheus HTTP listen IP and port.")
+		socketPath = flag.String("socket", "/var/run/occtl.socket", "Path to connect socket")
 	)
 	flag.Parse()
 
 	prometheus.MustRegister(
 		occtlStatusScrapeError,
 		occtlUsersScrapeError,
+		vpnStartTime,
 		vpnActiveSessions,
 		vpnHandledSessions,
 		vpnIPsBanned,
@@ -115,9 +125,10 @@ func main() {
 		vpnRX,
 		vpnUserTX,
 		vpnUserRX,
+		vpnUserStartTime,
 	)
 
-	occtlCli, err := occtl.NewClient(&occtl.OcctlCommander{})
+	occtlCli, err := occtl.NewClient(&occtl.OcctlCommander{}, socketPath)
 	if err != nil {
 		log.Fatalf("Failed to initialize occtl client: %v", err)
 	}
