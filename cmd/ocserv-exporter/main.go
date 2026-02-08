@@ -85,15 +85,15 @@ var (
 	ocservUserTX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "ocserv_user_tx_bytes",
 		Help: "Total TX usage in bytes of a user.",
-	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent"})
+	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent", "hostname"})
 	ocservUserRX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "ocserv_user_rx_bytes",
 		Help: "Total RX usage in bytes of a user.",
-	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent"})
+	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent", "hostname"})
 	ocservUserStartTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "ocserv_user_start_time_seconds",
 		Help: "Start time of user session since unix epoch in seconds.",
-	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent"})
+	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent", "hostname"})
 )
 
 func main() {

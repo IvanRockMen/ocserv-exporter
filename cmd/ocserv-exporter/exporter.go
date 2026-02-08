@@ -97,9 +97,9 @@ func (e *Exporter) updateUsers() {
 	}
 
 	for _, user := range users {
-		ocservUserTX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent).Set(float64(user.RawTX))
-		ocservUserRX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent).Set(float64(user.RawRX))
-		ocservUserStartTime.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent).Set(float64(user.RawConnectedAt))
+		ocservUserTX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent, user.Hostname).Set(float64(user.RawTX))
+		ocservUserRX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent, user.Hostname).Set(float64(user.RawRX))
+		ocservUserStartTime.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent, user.Hostname).Set(float64(user.RawConnectedAt))
 	}
 }
 
