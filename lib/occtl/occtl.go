@@ -51,6 +51,7 @@ type UsersMessage struct {
 	AverageRX      string `json:"Average RX"`
 	AverageTX      string `json:"Average TX"`
 	RawConnectedAt int64  `json:"raw_connected_at"`
+	UserAgent      string `json:"User-Agent"`
 }
 
 // Commander is an interface implementing exec commands

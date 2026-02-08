@@ -18,82 +18,82 @@ var (
 		Name: "occtl_users_scrape_error_total",
 		Help: "Total number of errors that occurred when calling occtl show users.",
 	}, []string{})
-	vpnStartTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_start_time_seconds",
+	ocservStartTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_start_time_seconds",
 		Help: "Start time of ocserv since unix epoch in seconds.",
 	}, []string{})
-	vpnActiveSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_active_sessions",
+	ocservActiveSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_active_sessions",
 		Help: "Current number of users connected.",
 	}, []string{})
-	vpnHandledSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_handled_sessions",
+	ocservHandledSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_handled_sessions",
 		Help: "Total number of sessions handled since server is up.",
 	}, []string{})
-	vpnIPsBanned = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_ips_banned",
+	ocservIPsBanned = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_ips_banned",
 		Help: "Total number of IPs banned.",
 	}, []string{})
-	vpnTotalAuthenticationFailures = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_total_authentication_failures",
+	ocservTotalAuthenticationFailures = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_total_authentication_failures",
 		Help: "Total number of authentication failures since server is up.",
 	}, []string{})
-	vpnSessionsHandled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_sessions_handled",
+	ocservSessionsHandled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_sessions_handled",
 		Help: "Total number of sessions handled since last stats reset.",
 	}, []string{})
-	vpnTimedOutSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_timed_out_sessions",
+	ocservTimedOutSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_timed_out_sessions",
 		Help: "Total number of timed out sessions since last stats reset.",
 	}, []string{})
-	vpnTimedOutIdleSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_timed_out_idle_sessions",
+	ocservTimedOutIdleSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_timed_out_idle_sessions",
 		Help: "Total number of sessions timed out (idle) since last stats reset.",
 	}, []string{})
-	vpnClosedDueToErrorSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_closed_error_sessions",
+	ocservClosedDueToErrorSessions = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_closed_error_sessions",
 		Help: "Total number of sessions closed due to error since last stats reset.",
 	}, []string{})
-	vpnAuthenticationFailures = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_authentication_failures",
+	ocservAuthenticationFailures = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_authentication_failures",
 		Help: "Total number of authentication failures since last stats reset.",
 	}, []string{})
-	vpnAverageAuthTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_average_auth_time_seconds",
+	ocservAverageAuthTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_average_auth_time_seconds",
 		Help: "Average time in seconds spent to authenticate users since last stats reset.",
 	}, []string{})
-	vpnMaxAuthTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_max_auth_time_seconds",
+	ocservMaxAuthTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_max_auth_time_seconds",
 		Help: "Maximum time in seconds spent to authenticate users since last stats reset.",
 	}, []string{})
-	vpnAverageSessionTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_average_session_time_seconds",
+	ocservAverageSessionTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_average_session_time_seconds",
 		Help: "Average session time in seconds since last stats reset.",
 	}, []string{})
-	vpnMaxSessionTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_max_session_time_seconds",
+	ocservMaxSessionTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_max_session_time_seconds",
 		Help: "Max session time in seconds since last stats reset.",
 	}, []string{})
-	vpnTX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_tx_bytes",
+	ocservTX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_tx_bytes",
 		Help: "Total TX usage in bytes since last stats reset.",
 	}, []string{})
-	vpnRX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_rx_bytes",
+	ocservRX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_rx_bytes",
 		Help: "Total RX usage in bytes since last stats reset.",
 	}, []string{})
-	vpnUserTX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_user_tx_bytes",
+	ocservUserTX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_user_tx_bytes",
 		Help: "Total TX usage in bytes of a user.",
-	}, []string{"username", "remote_ip", "mtu", "vpn_ipv4", "vpn_ipv6", "device"})
-	vpnUserRX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_user_rx_bytes",
+	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent"})
+	ocservUserRX = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_user_rx_bytes",
 		Help: "Total RX usage in bytes of a user.",
-	}, []string{"username", "remote_ip", "mtu", "vpn_ipv4", "vpn_ipv6", "device"})
-	vpnUserStartTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "vpn_user_start_time_seconds",
+	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent"})
+	ocservUserStartTime = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "ocserv_user_start_time_seconds",
 		Help: "Start time of user session since unix epoch in seconds.",
-	}, []string{"username", "remote_ip", "mtu", "vpn_ipv4", "vpn_ipv6", "device"})
+	}, []string{"username", "remote_ip", "mtu", "ocserv_ipv4", "ocserv_ipv6", "device", "user_agent"})
 )
 
 func main() {
@@ -107,25 +107,25 @@ func main() {
 	prometheus.MustRegister(
 		occtlStatusScrapeError,
 		occtlUsersScrapeError,
-		vpnStartTime,
-		vpnActiveSessions,
-		vpnHandledSessions,
-		vpnIPsBanned,
-		vpnTotalAuthenticationFailures,
-		vpnSessionsHandled,
-		vpnTimedOutSessions,
-		vpnTimedOutIdleSessions,
-		vpnClosedDueToErrorSessions,
-		vpnAuthenticationFailures,
-		vpnAverageAuthTime,
-		vpnMaxAuthTime,
-		vpnAverageSessionTime,
-		vpnMaxSessionTime,
-		vpnTX,
-		vpnRX,
-		vpnUserTX,
-		vpnUserRX,
-		vpnUserStartTime,
+		ocservStartTime,
+		ocservActiveSessions,
+		ocservHandledSessions,
+		ocservIPsBanned,
+		ocservTotalAuthenticationFailures,
+		ocservSessionsHandled,
+		ocservTimedOutSessions,
+		ocservTimedOutIdleSessions,
+		ocservClosedDueToErrorSessions,
+		ocservAuthenticationFailures,
+		ocservAverageAuthTime,
+		ocservMaxAuthTime,
+		ocservAverageSessionTime,
+		ocservMaxSessionTime,
+		ocservTX,
+		ocservRX,
+		ocservUserTX,
+		ocservUserRX,
+		ocservUserStartTime,
 	)
 
 	occtlCli, err := occtl.NewClient(&occtl.OcctlCommander{}, socketPath)

@@ -60,35 +60,35 @@ func (e *Exporter) updateStatus() {
 	if err != nil {
 		log.Errorf("Failed to get server status: %v", err)
 		occtlStatusScrapeError.WithLabelValues().Inc()
-		vpnActiveSessions.Reset()
-		vpnHandledSessions.Reset()
-		vpnIPsBanned.Reset()
+		ocservActiveSessions.Reset()
+		ocservHandledSessions.Reset()
+		ocservIPsBanned.Reset()
 		return
 	}
-	vpnStartTime.WithLabelValues().Set(float64(status.RawUpSince))
-	vpnActiveSessions.WithLabelValues().Set(float64(status.ActiveSessions))
-	vpnHandledSessions.WithLabelValues().Set(float64(status.HandledSessions))
-	vpnIPsBanned.WithLabelValues().Set(float64(status.IPsBanned))
-	vpnTotalAuthenticationFailures.WithLabelValues().Set(float64(status.TotalAuthenticationFailures))
-	vpnSessionsHandled.WithLabelValues().Set(float64(status.SessionsHandled))
-	vpnTimedOutSessions.WithLabelValues().Set(float64(status.TimedOutSessions))
-	vpnTimedOutIdleSessions.WithLabelValues().Set(float64(status.TimedOutIdleSessions))
-	vpnClosedDueToErrorSessions.WithLabelValues().Set(float64(status.ClosedDueToErrorSessions))
-	vpnAuthenticationFailures.WithLabelValues().Set(float64(status.AuthenticationFailures))
-	vpnAverageAuthTime.WithLabelValues().Set(float64(status.RawAverageAuthTime))
-	vpnMaxAuthTime.WithLabelValues().Set(float64(status.RawMaxAuthTime))
-	vpnAverageSessionTime.WithLabelValues().Set(float64(status.RawAverageSessionTime))
-	vpnMaxSessionTime.WithLabelValues().Set(float64(status.RawMaxSessionTime))
-	vpnTX.WithLabelValues().Set(float64(status.RawTX))
-	vpnRX.WithLabelValues().Set(float64(status.RawRX))
+	ocservStartTime.WithLabelValues().Set(float64(status.RawUpSince))
+	ocservActiveSessions.WithLabelValues().Set(float64(status.ActiveSessions))
+	ocservHandledSessions.WithLabelValues().Set(float64(status.HandledSessions))
+	ocservIPsBanned.WithLabelValues().Set(float64(status.IPsBanned))
+	ocservTotalAuthenticationFailures.WithLabelValues().Set(float64(status.TotalAuthenticationFailures))
+	ocservSessionsHandled.WithLabelValues().Set(float64(status.SessionsHandled))
+	ocservTimedOutSessions.WithLabelValues().Set(float64(status.TimedOutSessions))
+	ocservTimedOutIdleSessions.WithLabelValues().Set(float64(status.TimedOutIdleSessions))
+	ocservClosedDueToErrorSessions.WithLabelValues().Set(float64(status.ClosedDueToErrorSessions))
+	ocservAuthenticationFailures.WithLabelValues().Set(float64(status.AuthenticationFailures))
+	ocservAverageAuthTime.WithLabelValues().Set(float64(status.RawAverageAuthTime))
+	ocservMaxAuthTime.WithLabelValues().Set(float64(status.RawMaxAuthTime))
+	ocservAverageSessionTime.WithLabelValues().Set(float64(status.RawAverageSessionTime))
+	ocservMaxSessionTime.WithLabelValues().Set(float64(status.RawMaxSessionTime))
+	ocservTX.WithLabelValues().Set(float64(status.RawTX))
+	ocservRX.WithLabelValues().Set(float64(status.RawRX))
 }
 
 func (e *Exporter) updateUsers() {
 	e.users = nil
 
-	vpnUserTX.Reset()
-	vpnUserRX.Reset()
-	vpnUserStartTime.Reset()
+	ocservUserTX.Reset()
+	ocservUserRX.Reset()
+	ocservUserStartTime.Reset()
 	users, err := e.occtlCli.ShowUsers()
 	if err != nil {
 		log.Errorf("Failed to get users details: %v", err)
@@ -97,9 +97,9 @@ func (e *Exporter) updateUsers() {
 	}
 
 	for _, user := range users {
-		vpnUserTX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device).Set(float64(user.RawTX))
-		vpnUserRX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device).Set(float64(user.RawRX))
-		vpnUserStartTime.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device).Set(float64(user.RawConnectedAt))
+		ocservUserTX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent).Set(float64(user.RawTX))
+		ocservUserRX.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent).Set(float64(user.RawRX))
+		ocservUserStartTime.WithLabelValues(user.Username, user.RemoteIP, user.MTU, user.VPNIPv4, user.VPNIPv6, user.Device, user.UserAgent).Set(float64(user.RawConnectedAt))
 	}
 }
 
